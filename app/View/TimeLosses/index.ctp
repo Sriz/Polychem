@@ -12,7 +12,7 @@
 </script>
 <div class="timeLosses index">
     <div class="panel panel-primary">
-        <div class="panel-heading"><?php echo __('Time Losses For '); ?> </div>
+        <div class="panel-heading"><?php echo __('Time Loss'); ?> </div>
         <div class="panel-body">
             <table>
                 <?php

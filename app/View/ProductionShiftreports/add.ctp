@@ -1,4 +1,19 @@
 <script>
+
+	function checksubmit() {
+        var output = parseInt($('#output').val());
+        var ut = parseInt($('#ut').val());
+        var mt = parseInt($('#mt').val());
+        var ot = parseInt($('#ot').val());
+        var pf = parseInt($('#pf').val());
+        var ct = parseInt($('#ct').val());
+        if(Math.min(ut>0?ut:'99999999999999', mt>0?mt:'99999999999999',ot>0?ot:'99999999999999',pf>0?pf:'99999999999999',ct>0?ct:'99999999999999') <= output || ut+mt+ot+pf+ct==0){
+            alert("Output should be lesser than Base-UT, Base-MT, Base-OT, Print Film and CT");
+            return false;
+        }else {
+            return true;
+        }
+    }
 	  $(document).ready(function(){
               $('.nepalidatepicker').nepaliDatePicker();
        });
@@ -165,7 +180,7 @@
 		echo $this->Form->input('base_ot',array('label'=>array('class'=>'col-sm-2 control-label','text'=>'Base OT'),'class'=>array('form-control','input-sm'),'value'=>'0','id'=>'ot'));
 		echo $this->Form->input('print_film',array('class'=>array('form-control','input-sm'),'value'=>'0','id'=>'pf'));
 		echo $this->Form->input('CT',array('label'=>array('class'=>'col-sm-2 control-label','text'=>'CT'),'class'=>array('form-control','input-sm'),'value'=>'0','id'=>'ct'));
-		echo $this->Form->input('output',array('class'=>array('form-control','input-sm'),'id'=>'output','value'=>'0','onkeyup'=>'checkoutput()'));
+		echo $this->Form->input('output',array('class'=>array('form-control','input-sm'),'id'=>'output','value'=>'0'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit'),array('onclick'=>'checksubmit()')); ?>

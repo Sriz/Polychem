@@ -979,7 +979,6 @@
                                     <td><?php echo number_format($net_m/($avg_wh_m*$operated_in_month[0][0]['operated_in_month']),2);?></td>
                                     <td><?php echo number_format($net_y/($avg_wh_y*$operated_in_year[0][0]['operated_in_year']),2);?></td>
                                 </tr>
-                                
                             </table>
                         </div>
                     </div>
@@ -2072,6 +2071,74 @@
     </div>
     <div class="clearfix"></div>
 
+       <!-- Productions Shiftreport -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"> Production Shift Summary </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-bordered">
+                            <tr class="success">
+                                <th>Base</th>
+                                <th>Today <?=$productionShifrReport['lastDate'];?></th>
+                                <th>To Month <?=substr($productionShifrReport['lastDate'],0,7);?></th>
+                                <th>To Year <?=substr($productionShifrReport['lastDate'],0,4);?></th>
+                            </tr>
+                            <tr>
+                                <td>Total MT</td>
+                               <td><?=number_format($productionShifrReport['toDay']['base_mt'],2);?></td>
+                               <td><?=number_format($productionShifrReport['toMonth']['base_mt'],2);?></td>
+                               <td><?=number_format($productionShifrReport['toYear']['base_mt'],2);?></td>
+                            </tr>
+                            <tr>
+                                <td>Total UT</td>
+                                <td><?=number_format($productionShifrReport['toDay']['base_ut'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toMonth']['base_ut'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toYear']['base_ut'],2);?></td>
+                            </tr>
+                            <tr>
+                                <td>Total CT</td>
+                                <td><?=number_format($productionShifrReport['toDay']['ct'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toMonth']['ct'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toYear']['ct'],2);?></td>
+                            </tr>
+                            <tr>
+                                <td>Total CT KG</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Total PF</td>
+                                <td><?=number_format($productionShifrReport['toDay']['print_film'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toMonth']['print_film'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toYear']['print_film'],2);?></td>
+                            </tr>
+                            <tr>
+                                <td>Total Output</td>
+                                <td><?=number_format($productionShifrReport['toDay']['output'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toMonth']['output'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toYear']['output'],2);?></td>
+                            </tr>
+                            <tr>
+                                <td>Perhour Output</td>
+                                <td><?=number_format($productionShifrReport['toDay']['perhourOutput'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toMonth']['perhourOutput'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toYear']['perhourOutput'],2);?></td>
+                            </tr>
+                            <tr>
+                                <td>Per Working Hour Output</td>
+                                <td><?=number_format($productionShifrReport['toDay']['perHourOutputWorked'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toMonth']['perHourOutputWorked'],2);?></td>
+                                <td><?=number_format($productionShifrReport['toYear']['perHourOutputWorked'],2);?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end Productions Shiftreport -->
+
     <!--Scrap-->
     <div class="row">
         <div class="col-md-12">
@@ -2090,36 +2157,70 @@
 
                         <tr>
                             <td>Base-UT</td>
-                            <td><?=number_format($base_ut_daily,2);?></td>
-                            <td><?=number_format($base_ut_month,2);?></td>
-                            <td><?=number_format($base_ut,2);?></td>
+                            <td><?=number_format($base_ut_daily*100,2);?>%</td>
+                            <td><?=number_format($base_ut_month*100,2);?>%</td>
+                            <td><?=number_format($base_ut*100,2);?>%</td>
                         </tr>
                         <tr>
                             <td>Base-MT</td>
-                            <td><?=number_format($base_mt_daily,2);?></td>
-                            <td><?=number_format($base_mt_month,2);?></td>
-                            <td><?=number_format($base_mt,2);?></td>
+                            <td><?=number_format($base_mt_daily*100,2);?>%</td>
+                            <td><?=number_format($base_mt_month*100,2);?>%</td>
+                            <td><?=number_format($base_mt*100,2);?>%</td>
                         </tr>
                         <tr>
                             <td>Base-OT</td>
-                            <td><?=number_format($base_ot_daily,2);?></td>
-                            <td><?=number_format($base_ot_month,2);?></td>
-                            <td><?=number_format($base_ot,2);?></td>
+                            <td><?=number_format($base_ot_daily*100,2);?>%</td>
+                            <td><?=number_format($base_ot_month*100,2);?>%</td>
+                            <td><?=number_format($base_ot*100,2);?>%</td>
                         </tr>
                         <tr>
                             <td>CT</td>
-                            <td><?=number_format($CT_daily,2);?></td>
-                            <td><?=number_format($CT_month,2);?></td>
-                            <td><?=number_format($CT,2);?></td>
+                            <td><?=number_format($CT_daily*100,2);?>%</td>
+                            <td><?=number_format($CT_month*100,2);?>%</td>
+                            <td><?=number_format($CT*100,2);?>%</td>
                         </tr>
 
                         <tr>
                             <td>Print Film</td>
-                            <td><?=number_format($print_film_daily,2);?></td>
-                            <td><?=number_format($print_film_month,2);?></td>
-                            <td><?=number_format($print_film1,2);?></td>
-                        </tr>
+                            <td><?=number_format($print_film_daily*100,2);?>%</td>
+                            <td><?=number_format($print_film_month*100,2);?>%</td>
+                            <td><?=number_format($print_film1*100,2);?>%</td>
 
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Scrap by Brand-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Scrap by Brand%
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <th>Brand</th>
+                            <th>Type</th>
+                            <th>Target Weight</th>
+                            <th>Output Weight</th>
+                            <th>Difference</th>
+                        </thead>
+
+                        <?php foreach($lam_target as $lam): ?>
+                        <tr>
+                            <td><?= $lam['laminating_targets']['brand']?></td>
+                            <td><?= $lam['laminating_targets']['type']?></td>
+                            <td><?= $lam['laminating_targets']['weight']?></td>
+                            <?php $output_wt = $lam_weight[$lam['laminating_targets']['brand']]; 
+                                  $target_wt = $lam['laminating_targets']['weight'];?>
+                            <td><?= number_format($output_wt,2); ?></td>
+                            <td><?=  number_format(($output_wt-$target_wt)*100/$target_wt)?>%</td>
+                            
+                        </tr>
+                        <?php endforeach; ?>
                     </table>
                 </div>
             </div>

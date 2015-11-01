@@ -1,4 +1,23 @@
 <script>
+
+	function checksubmit() {
+
+     var output = parseInt($('#ProductionShiftreportOutput').val());
+
+     var ut = parseInt($('#ut').val());
+     var mt = parseInt($('#mt').val());
+     var ot = parseInt($('#ot').val());
+     var pf = parseInt($('#pf').val());
+     var ct = parseInt($('#ct').val());
+
+
+     if(Math.min(ut>0?ut:'99999999999999', mt>0?mt:'99999999999999',ot>0?ot:'99999999999999',pf>0?pf:'99999999999999',ct>0?ct:'99999999999999') <= output || ut+mt+ot+pf+ct==0){
+         alert("Output should be lesser than Base-UT, Base-MT, Base-OT, Print Film and CT");
+         return false;
+     }else {
+         return true;
+     }
+ }
 	$( document ).ready(function() {
 if ($("#ot").val()=="0") {
 	$("#ot").attr('disabled','disabled');   
@@ -170,7 +189,7 @@ $(".color").html(html);
 		
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+ <?php echo $this->Form->end(__('Submit') ,['onclick'=>'return checksubmit()']); ?>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>

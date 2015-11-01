@@ -19,7 +19,6 @@ function time_elapsed($secs){
 }
 ?>
 <?php
-
 App::import('Vendor','tcpdf/tcpdf');
 // create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -56,16 +55,12 @@ $pdf->SetFont(null, '', 9, '', true);
 // Add a page
 // This method has several options, check the source code documentation for more information.
 $pdf->AddPage();
-
 // set cell padding
 $pdf->setCellPaddings(1, 1, 1, 1);
-
 // set cell margins
 $pdf->setCellMargins(1, 1, 1, 1);
-
 // set color for background
 $pdf->SetFillColor(255, 255, 127);
-
 $html = "";
 $html .="<h2>Production Shift Report - ".$date."</h2>";
 $html .= "<table border=\"1\" style=\"padding-left:5px;\">";
@@ -88,8 +83,6 @@ $base_ot = 0;
 $print_film = 0;
 $ct = 0;
 $output = 0;
-
-
 foreach($productionShiftReportA as $p):
     $html .="<tr>";
     $html .="<td>".$p['production_shiftreport']['shift']."</td>";
@@ -103,16 +96,13 @@ foreach($productionShiftReportA as $p):
     $html .="<td>".number_format($p['production_shiftreport']['CT'])."</td>";
     $html .="<td>".number_format($p['production_shiftreport']['output'])."</td>";
     $html .="</tr>";
-
     $base_ut += intval($p['production_shiftreport']['base_ut']);
     $base_mt += intval($p['production_shiftreport']['base_mt']);
     $base_ot += intval($p['production_shiftreport']['base_ot']);
     $print_film += intval($p['production_shiftreport']['print_film']);
     $ct += intval($p['production_shiftreport']['CT']);
     $output += intval($p['production_shiftreport']['output']);
-
 endforeach;
-
 $html .="<tr>";
 $html .="<td>Total-A :</td>";
 $html .="<td></td>";
@@ -144,16 +134,13 @@ foreach($productionShiftReportB as $p):
     $html .="<td>".number_format($p['production_shiftreport']['CT'])."</td>";
     $html .="<td>".number_format($p['production_shiftreport']['output'])."</td>";
     $html .="</tr>";
-
     $base_ut += intval($p['production_shiftreport']['base_ut']);
     $base_mt += intval($p['production_shiftreport']['base_mt']);
     $base_ot += intval($p['production_shiftreport']['base_ot']);
     $print_film += intval($p['production_shiftreport']['print_film']);
     $ct += intval($p['production_shiftreport']['CT']);
     $output += intval($p['production_shiftreport']['output']);
-
 endforeach;
-
 $html .="<tr>";
 $html .="<td>Total-B :</td>";
 $html .="<td></td>";
@@ -166,7 +153,6 @@ $html .="<td>".$print_film."</td>";
 $html .="<td>".$ct."</td>";
 $html .="<td>".$output."</td>";
 $html .="</tr>";
-
 //ToMonth
 $html .="<tr>";
 $html .="<td>Total ToMonth</td>";
@@ -180,7 +166,6 @@ $html .="<td>".$shiftReportToMonth['print_film']."</td>";
 $html .="<td>".$shiftReportToMonth['CT']."</td>";
 $html .="<td>".$shiftReportToMonth['output']."</td>";
 $html .="</tr>";
-
 //ToYear
 $html .="<tr>";
 $html .="<td>Total ToYear</td>";
@@ -194,10 +179,71 @@ $html .="<td>".$shiftReportToYear['print_film']."</td>";
 $html .="<td>".$shiftReportToYear['CT']."</td>";
 $html .="<td>".$shiftReportToYear['output']."</td>";
 $html .="</tr>";
-
-
 $html .= "</table><br><br>";
-
+/* timeloss table */
+$html .="<h2><center>Time Loss Table</center></h2>";
+$total_lh=0;
+$total_bh=0;
+foreach($timeLossLossHourAll as $losshour):
+    $total_lh += $losshour['time_loss']['totalloss_sec'];
+endforeach;
+foreach($timeLossBreakDownAll as $breakhour):
+    $total_bh += $breakhour['time_loss']['totalloss_sec'];
+endforeach;
+$total_wh = 24*60*60 - ($total_lh+$total_bh);
+$html .="<table border=\"0.5px;\" style=\"padding-left:5px;\">
+            <tr style=\"font-weight: bold\">
+                <td>Loss Hour</td>";
+$html .="<td>".time_elapsed($total_lh)."</td>
+            </tr>
+            <tr style=\"font-weight: bold\">
+                <td>Breakdown Hour</td>";
+$html .="<td>".time_elapsed($total_bh)."</td>
+            </tr>
+            <tr style=\"font-weight: bold\">
+                <td>Work Hour</td>";
+$html .="<td>".time_elapsed($total_wh)."</td>
+            </tr>
+        </table>";
+$html .="<h3>Time Loss</h3>";
+$html .= "<table border=\"1\" style=\"padding-left:5px;\">";
+$html .= "<tr>
+    <td><strong>Type</strong></td>
+    <td><strong>Start Time</strong></td>
+    <td><strong>End Time</strong></td>
+    <td><strong>Loss Time</strong></td>
+    <td><strong>Reasons</strong></td>
+    </tr>";
+$totalLossSecLoss=0;
+$totalLossSecBreak=0;
+foreach($timeLossLossHour as $lossHour){
+    // echo'<pre>';print_r($lossHour);die;
+    $html .="<tr>";
+    $html .="<td>".$lossHour['time_loss']['type']."</td>";
+    $html .="<td>".$lossHour['time_loss']['time']."</td>";
+    $html .="<td>".$lossHour['time_loss']['wk_hrs']."</td>";
+    $html .="<td>".time_elapsed($lossHour['time_loss']['totalloss_sec'])."</td>";
+    $html .="<td>".$lossHour['time_loss']['reasons']."</td>";
+    $html .="</tr>";
+    $totalLossSecLoss += intval($lossHour['time_loss']['totalloss_sec']);
+}
+$html .="<tr><td></td><td></td><td><strong>Total Loss LossHour</strong></td><td><strong>".time_elapsed($totalLossSecLoss)."</strong></td><td></td></tr>";
+$html .="<tr><td></td><td></td><td></td><td></td><td></td></tr>";
+foreach($timeLossBreakDown as $lossHour){
+    $html .="<tr>";
+    $html .="<td>".$lossHour['time_loss']['type']."</td>";
+    $html .="<td>".$lossHour['time_loss']['time']."</td>";
+    $html .="<td>".$lossHour['time_loss']['wk_hrs']."</td>";
+    $html .="<td>".time_elapsed($lossHour['time_loss']['totalloss_sec'])."</td>";
+    $html .="<td>".$lossHour['time_loss']['reasons']."</td>";
+    $html .="</tr>";
+    $totalLossSecBreak += intval($lossHour['time_loss']['totalloss_sec']);
+}
+$html .="<tr><td></td><td></td><td></td><td></td><td></td></tr>";
+$html .="<tr><td></td><td></td><td><strong>Total Loss BreakDown</strong></td><td><strong>".time_elapsed($totalLossSecBreak)."</strong></td><td></td></tr>";
+$html .="<tr><td></td><td></td><td></td><td></td><td></td></tr>";
+$html .="<tr><td></td><td></td><td><strong>Total Loss</strong></td><td><strong>".time_elapsed($totalLossSecBreak+$totalLossSecLoss)."</strong></td><td></td></tr>";
+$html .="</table>";
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 // ---------------------------------------------------------

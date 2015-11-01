@@ -81,6 +81,7 @@
 				<li class="<?php echo $this->params->params['controller'] == 'PrintingShiftreports' ?>"><a href="<?php echo $this->params->webroot?>PrintingShiftreports/index/sort:date/direction:desc"><i class="fa fa-dashboard"></i> Daily Printing Shift </a></li>
 				<li class="<?php echo $this->params->params['controller'] == 'TimeLosses' ?>"><a href="<?php echo $this->params->webroot?>TimeLosses/index/sort:nepalidate/direction:desc"><i class="fa fa-dashboard"></i> Time Loss</a></li>
 				<li class="<?php echo $this->params->params['controller'] == 'PrintingIssues' ?>"><a href="<?php echo $this->params->webroot?>TblPrintingIssues/index/sort:id/direction:desc"><i class="fa fa-dashboard"></i> Printing Mixing Report</a></li>
+				<li class="<?php echo $this->params->params['controller'] == 'ScrapMixing' ?>"><a href="<?php echo $this->params->webroot?>ScrapMixing/index/sort:date/direction:desc"><i class="fa fa-dashboard"></i> Scrap Sent to Mixing</a></li>
 			</ul>
 				</li>
 <!--				<li><a href="tables.html"><i class="fa fa-list"></i> Activity</a></li>-->
