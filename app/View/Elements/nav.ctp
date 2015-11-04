@@ -47,6 +47,8 @@
 
 				
 				<li><a href="<?php echo $this->params->webroot?>PrintDimensionTarget"><i class="fa fa-plus"></i>Print Dimension Target</a></li>
+
+				<li><a href="<?php echo $this->params->webroot?>LaminatingTarget"><i class="fa fa-plus"></i>Laminating Target</a></li>
 				<li><a href="#"><i class="fa fa-plus"></i>Empty</a></li>
 				
 			</ul>

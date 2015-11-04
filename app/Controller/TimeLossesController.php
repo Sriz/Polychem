@@ -125,10 +125,19 @@ class TimeLossesController extends AppController
 
 
         $ttype = $this->TimelossReason->find('list', array('fields' => array('reason', 'reason'),
-            'conditions' =>
-                array('department' => $dept,
-                    'type' => $tp)));
+                                            'conditions' =>
+                                                array('department' => $dept,
+                                                    'type' => $tp),
+                                                'order' => array('reason ASC'),
+                                                ));
 
+        //$ttype = $this->TimelossReason->query("select reason from timeloss_reason where department='$dept' and type='$tp' order by reason asc");
+        // echo '<pre>';print_r($ttype);die;
+        // $i = 0;
+        // foreach($ttype as $ttyp):
+        //     $loss_reason[$i] = $ttyp['timeloss_reason']['reason'];
+        // endforeach;
+        //  echo '<pre>';print_r($ttype);die;
         $this->set('type', $ttype);
 
         $time = $this->TimeLoss->query("Select * from time_loss where id='$id'")[0];
@@ -178,7 +187,7 @@ class TimeLossesController extends AppController
         $qwt = $this->request->data['id'];
         $did = $this->request->data['departmentid'];
         /*$tp = $this->request->data['type'];*/
-        $type = $this->TimelossReason->query("SELECT reason FROM timeloss_reason where type='$qwt' and department='$did' order by reason");
+        $type = $this->TimelossReason->query("SELECT reason FROM timeloss_reason where type='$qwt' and department='$did' order by reason asc");
 
         echo '<option value="null">Please select</option>';
         foreach ($type as $t):

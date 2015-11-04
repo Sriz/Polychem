@@ -2103,12 +2103,6 @@
                                 <td><?=number_format($productionShifrReport['toYear']['ct'],2);?></td>
                             </tr>
                             <tr>
-                                <td>Total CT KG</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
                                 <td>Total PF</td>
                                 <td><?=number_format($productionShifrReport['toDay']['print_film'],2);?></td>
                                 <td><?=number_format($productionShifrReport['toMonth']['print_film'],2);?></td>
@@ -2121,16 +2115,16 @@
                                 <td><?=number_format($productionShifrReport['toYear']['output'],2);?></td>
                             </tr>
                             <tr>
-                                <td>Perhour Output</td>
-                                <td><?=number_format($productionShifrReport['toDay']['perhourOutput'],2);?></td>
-                                <td><?=number_format($productionShifrReport['toMonth']['perhourOutput'],2);?></td>
-                                <td><?=number_format($productionShifrReport['toYear']['perhourOutput'],2);?></td>
+                                <td>Per Hour Output</td>
+                                <td><?php echo number_format($prod_output_day/24,2)?></td>
+                                <td><?php echo number_format($prod_output_month/(24*$prod_month[0][0]['month']),2)?></td>
+                                <td><?php echo number_format($prod_output_year/(24*$prod_year[0][0]['year']),2)?></td>
                             </tr>
                             <tr>
                                 <td>Per Working Hour Output</td>
-                                <td><?=number_format($productionShifrReport['toDay']['perHourOutputWorked'],2);?></td>
-                                <td><?=number_format($productionShifrReport['toMonth']['perHourOutputWorked'],2);?></td>
-                                <td><?=number_format($productionShifrReport['toYear']['perHourOutputWorked'],2);?></td>
+                                <td><?php echo number_format($prod_output_day/$avg_wh_d,2)?></td>
+                                <td><?php echo number_format($prod_output_month/($avg_wh_m*$prod_month[0][0]['month']),2)?></td>
+                                <td><?php echo number_format($prod_output_year/($avg_wh_y*$prod_year[0][0]['year']),2)?></td>
                             </tr>
                         </table>
                     </div>
@@ -2203,22 +2197,18 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <th>Brand</th>
-                            <th>Type</th>
                             <th>Target Weight</th>
                             <th>Output Weight</th>
                             <th>Difference</th>
                         </thead>
-
                         <?php foreach($lam_target as $lam): ?>
                         <tr>
                             <td><?= $lam['laminating_targets']['brand']?></td>
-                            <td><?= $lam['laminating_targets']['type']?></td>
                             <td><?= $lam['laminating_targets']['weight']?></td>
                             <?php $output_wt = $lam_weight[$lam['laminating_targets']['brand']]; 
-                                  $target_wt = $lam['laminating_targets']['weight'];?>
+                                  $target_wt = $lam['laminating_targets']['weight']; ?>
                             <td><?= number_format($output_wt,2); ?></td>
-                            <td><?=  number_format(($output_wt-$target_wt)*100/$target_wt)?>%</td>
-                            
+                            <td><?=  number_format($output_wt-$target_wt,2)?></td>
                         </tr>
                         <?php endforeach; ?>
                     </table>

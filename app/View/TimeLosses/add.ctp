@@ -105,14 +105,14 @@
             <div class="row">
             <label class="col-sm-2 control-label"> Start Time</label>
             <div class="col-sm-2 datePick">
-                <select id="startTimeHour" class="form-control" data-toggle="tooltip" title="Hour" required="required">
+                <select id="startTimeHour" class="form-control" data-toggle="tooltip" title="Hour" required="required" style="width:100px">
                     <?php for ($i = 0; $i < 24; $i++): ?>
                         <option value="<?=$i;?>"><?= $i; ?></option>
                     <?php endfor; ?>
                 </select>
             </div>
             <div class="col-sm-2 datePick">
-                <select id="startTimeMinute" class="form-control" data-toggle="tooltip" title="Minute" required="required">
+                <select id="startTimeMinute" class="form-control" data-toggle="tooltip" title="Minute" required="required" style="width:100px">
                     <?php for ($i = 0; $i < 60; $i++): ?>
                         <option value="<?=$i;?>"><?= $i; ?></option>
                     <?php endfor; ?>
@@ -126,14 +126,14 @@
             <div class="row">
             <label class="col-sm-2 control-label"> End Time</label>
             <div class="col-sm-2 datePick">
-                <select id="endTimeHour" class="form-control" data-toggle="tooltip" title="Hour">
+                <select id="endTimeHour" class="form-control" data-toggle="tooltip" title="Hour" style="width:100px">
                     <?php for ($i = 0; $i < 24; $i++): ?>
                         <option value="<?=$i;?>"><?= $i; ?></option>
                     <?php endfor; ?>
                 </select>
             </div>
             <div class="col-sm-2 datePick">
-                <select id="endTimeMinute" class="form-control" data-toggle="tooltip" title="Minute">
+                <select id="endTimeMinute" class="form-control" data-toggle="tooltip" title="Minute" style="width:100px">
                     <?php for ($i = 0; $i < 60; $i++): ?>
                         <option value="<?=$i;?>"><?= $i; ?></option>
                     <?php endfor; ?>

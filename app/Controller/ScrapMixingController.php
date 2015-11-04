@@ -95,4 +95,19 @@ class ScrapMixingController extends AppController {
 			$this->Session->setFlash(__('The scrap sent to mixing could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index/sort:date/direction:desc'));
-	}}
+	}
+	function exportcsv() 
+    {
+        $this->loadModel('ScrapMixing');
+        $result=$this->ScrapMixing->query("select * from scrap_mixings order by date desc");
+
+        $this->set('posts', $result);
+
+        $this->layout = null;
+
+        $this->autoLayout = false;
+
+        Configure::write('debug','2');
+    }
+
+}

@@ -23,7 +23,7 @@
 	<ul>
 		<li><?php echo $this->Html->link(__('Edit Mixing Material'), array('action' => 'edit', $mixingMaterial['MixingMaterial']['id'])); ?> </li>
 		<li><?php echo $this->Form->postLink(__('Delete Mixing Material'), array('action' => 'delete', $mixingMaterial['MixingMaterial']['id']), null, __('Are you sure you want to delete # %s?', $mixingMaterial['MixingMaterial']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Mixing Materials'), array('action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Scrap Sent to Mixing'), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Mixing Material'), array('action' => 'add')); ?> </li>
 	</ul>
 </div>

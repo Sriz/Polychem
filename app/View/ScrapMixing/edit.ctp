@@ -31,8 +31,12 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('date', array('id' => 'nepalidatepicker', 'type' => 'text', 'class' => 'nepalidatepicker form-control input-md','required'=>'required'));
-		$arr = ['printed_scrap'=>'Printed Scrap','unprinted_scrap'=>'Unprinted Scrap'];
-		echo $this->Form->input('scrap_sent',['options'=>$arr, 'label'=>'Category', 'empty'=>'Please select','required'=>'required']);
+		// $arr = ['printed_scrap'=>'Printed Scrap','unprinted_scrap'=>'Unprinted Scrap'];
+		// echo $this->Form->input('scrap_sent',['options'=>$arr, 'label'=>'Category', 'empty'=>'Please select','required'=>'required']);
+
+        $arr = ['Printed Scrap'=>'Printed Scrap','Unprinted Scrap'=>'Unprinted Scrap'];
+        echo $this->Form->input('scrap_sent',['options'=>$arr, 'label'=>'Category', 'empty'=>'No-Category','required'=>'required']);
+
 		echo $this->Form->input('weight');
 	?>
 	</fieldset>
@@ -43,6 +47,6 @@
 	<ul>
 
 		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('ScrapMixing.id')), null, __('Are you sure you want to delete # %s?', $this->Form->value('ScrapMixing.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Mixing Materials'), array('action' => 'index/sort:date/direction:desc')); ?></li>
+		<li><?php echo $this->Html->link(__('List Scrap Sent to Mixing'), array('action' => 'index/sort:date/direction:desc')); ?></li>
 	</ul>
 </div>

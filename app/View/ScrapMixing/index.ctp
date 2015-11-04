@@ -18,8 +18,8 @@
             <table>
                 <?php
                 echo $this->Search->create();
-                echo '<tr><td>' . $this->Search->input('filter1', array('id' => 'nepalidatepicker', 'class' => 'nepalidatepicker')) . '</td>';
-                echo '<td>' . $this->Search->end(__('Search', true)) . '</td>';
+                // echo '<tr><td>' . $this->Search->input('date', array('id' => 'nepalidatepicker', 'class' => 'nepalidatepicker')) . '</td>';
+                // echo '<td>' . $this->Search->end(__('Search', true)) . '</td>';
                 ?>
                 <td><?php echo $this->Html->link("Add", array('controller' => 'ScrapMixing', 'action' => 'add'), array('class' => 'btn btn-primary')); ?>  
                 <a class="btn btn-success" href="<?=$base_url;?>ScrapMixing/exportcsv"><i class="glyphicon glyphicon-download"></i> Export CSV</a>

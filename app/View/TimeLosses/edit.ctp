@@ -8,12 +8,12 @@
             console.log("focus");
             showCalendarBox('nepalidatepicker');
         });
-        // $("#type").change(function () {
-        //     var type = $(this).val();
-        //     var dep = $("#department").val();
-        //     $.post("fetchreason", {id: type, departmentid: dep}, function (response) {
-        //         $(".reason").html(response);
-        //     })
+        //  $("#type").change(function () {
+        //      var type = $(this).val();
+        //      var dep = $("#department").val();
+        //    $.post("fetchreason", {id: type, departmentid: dep}, function (response) {
+        //          $(".reason").html(response);
+        //      })
         // });
         $("#type").change(function () {
             var dep = document.getElementById('department').value;
@@ -36,28 +36,24 @@
         return result;
     }
     function fetchdata() {
-        var qty;
+        var qty
         var department = document.getElementById('department').value;
         var x = document.getElementsByClassName('type');
         for (i = 0; i < x.length; i++) {
             var e = document.getElementById("type");
             qty = e.options[e.selectedIndex].text;
-
-
         }
         var dataString = 'id=' + qty + '&departmentid=' + department;
-
         $.ajax
         ({
             type: "POST",
-            url: "/polychem/TimeLosses/fetchreason",
+            url: "fetchreason",
             data: dataString,
             cache: false,
             success: function (html) {
                 $(".reason").html(html);
             }
         });
-
     }
 </script>
 
@@ -116,7 +112,7 @@
             //echo $this->Form->input('date',array('type'=>'text','value'=>$date,'class'=>array('form-control input-sm')));
             echo $this->Form->input('shift', array('options' => array('null' => 'Please Select', 'A' => 'A', 'B' => 'B'), 'class' => 'form-control input-sm','required'=>'required'));
             echo $this->Form->input('department_id', array('id' => 'department', 'type' => 'hidden', 'value' => 'calender', 'class' => 'form-control input-sm','required'=>'required','readonly'=>'readonly'));
-            echo $this->Form->input('type', array('id' => 'type', 'class' => array('type', 'form-control', 'input-sm'), 'options' => array('Please select' => 'Please select', 'BreakDown' => 'BreakDown', 'LossHour' => 'LossHour'), 'onchange' => 'fetchdata()','required'=>'required'));
+            echo $this->Form->input('type', array('id' => 'type', 'class' => array('type', 'form-control', 'input-sm'), 'options' => array('Please select' => 'Please select', 'BreakDown' => 'BreakDown', 'LossHour' => 'LossHour'), 'onchange' => '','required'=>'required'));
             echo $this->Form->input('reasons', array('id' => 'reasons', 'options' => $type, 'class' => array('reason', 'form-control input-sm'),'required'=>'required'));
             ?>
             <?php
@@ -133,14 +129,14 @@
             <div class="row">
                 <label class="col-sm-2 control-label"> Start Time</label>
                 <div class="col-sm-2 datePick">
-                    <select id="startTimeHour" class="form-control" data-toggle="tooltip" title="Hour" required="required">
+                    <select id="startTimeHour" class="form-control" data-toggle="tooltip" title="Hour" required="required" style="width:100px">
                         <?php for ($i = 0; $i < 24; $i++): ?>
                             <option <?=(int)$startTiem[0]==$i?'selected':'';?> value="<?=$i;?>"><?= $i; ?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
                 <div class="col-sm-2 datePick">
-                    <select id="startTimeMinute" class="form-control" data-toggle="tooltip" title="Minute" required="required">
+                    <select id="startTimeMinute" class="form-control" data-toggle="tooltip" title="Minute" required="required" style="width:100px">
                         <?php for ($i = 0; $i < 60; $i++): ?>
                             <option <?=(int)$startTiem[1]==$i?'selected':'';?> value="<?=$i;?>"><?= $i; ?></option>
                         <?php endfor; ?>
@@ -154,14 +150,14 @@
             <div class="row">
                 <label class="col-sm-2 control-label"> End Time</label>
                 <div class="col-sm-2 datePick">
-                    <select id="endTimeHour" class="form-control" data-toggle="tooltip" title="Hour" required="required">
+                    <select id="endTimeHour" class="form-control" data-toggle="tooltip" title="Hour" required="required" style="width:100px">
                         <?php for ($i = 0; $i < 24; $i++): ?>
                             <option <?=(int)$endTiem[0]==$i?'selected':'';?> value="<?=$i;?>"><?= $i; ?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
                 <div class="col-sm-2 datePick">
-                    <select id="endTimeMinute" class="form-control" data-toggle="tooltip" title="Minute" required="required">
+                    <select id="endTimeMinute" class="form-control" data-toggle="tooltip" title="Minute" required="required" style="width:100px">
                         <?php for ($i = 0; $i < 60; $i++): ?>
                             <option <?=(int)$endTiem[1]==$i?'selected':'';?> value="<?=$i;?>"><?= $i; ?></option>
                         <?php endfor; ?>
