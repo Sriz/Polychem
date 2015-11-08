@@ -110,6 +110,7 @@
 				
 				<li class="<?php echo $this->params->params['controller'] == 'ProductionShiftreports' ?>"><a href="<?php echo $this->params->webroot?>ProductionShiftreports/index/sort:date/direction:desc"><i class="fa fa-dashboard"></i> Production Shift Report</a></li>
 			   <li class="<?php echo $this->params->params['controller'] == 'TimeLosses' ?>"><a href="<?php echo $this->params->webroot?>TimeLosses/index/sort:nepalidate/direction:desc"><i class="fa fa-dashboard"></i> Time Loss</a></li>
+			   <li class="<?php echo $this->params->params['controller'] == 'ScrapLamMixing' ?>"><a href="<?php echo $this->params->webroot?>ScrapLamMixing/index/sort:date/direction:desc"><i class="fa fa-dashboard"></i>Scrap Sent to Mixing</a></li>
 				
 				
 			</ul>

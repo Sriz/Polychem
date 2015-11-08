@@ -31,6 +31,7 @@ class PagesController extends AppController
         $this->laminating_data();
         $this->laminatingProductionShiftReport();
         $this->losshour_calculate(AuthComponent::user('role'));
+        $this->ctLoad();
         //  $this->losshour_calculate(AuthComponent::user('role'));// default department = calender
 
 
@@ -119,6 +120,81 @@ class PagesController extends AppController
         );
 
     }
+
+
+    
+    public function ctLoad()
+    {
+        /*
+         * CT KG Consumption
+         */
+        $this->loadModel('LaminatingTargets');
+        $this->loadModel('ProductionShiftreport');
+
+        $date = $this->ProductionShiftreport->query("SELECT distinct(date) FROM production_shiftreport ORDER BY date ASC LIMIT 1")[0]['production_shiftreport']['date'];
+        $startmonth = substr($date, 0, 7).'-01';
+        $startyear = substr($date, 0, 4).'-01-01';
+
+        $laminating_targets = $this->LaminatingTargets->Query("SELECT * from laminating_targets ");
+        $production_shiftreportToDay = $this->ProductionShiftreport->Query("SELECT * from production_shiftreport WHERE  date='$date'");
+        $production_shiftreportToMonth = $this->ProductionShiftreport->Query("SELECT * from production_shiftreport where date between '$startmonth' and '$date'");
+        $production_shiftreportToYear = $this->ProductionShiftreport->Query("SELECT * from production_shiftreport where date between '$startyear' and '$date'");
+
+        $ct['ToDay'] = $this->ct_table($laminating_targets, $production_shiftreportToDay);
+        $ct['ToMonth'] = $this->ct_table($laminating_targets, $production_shiftreportToMonth);
+        $ct['ToYear'] = $this->ct_table($laminating_targets, $production_shiftreportToYear);
+        
+
+        $this->set('ctArr', $ct);
+    }
+    private function ct_table($laminating_targets, $production_shiftreport)
+    {
+        $data['dull_ct']=0;
+        $data['two_yard']=0;
+        $data['two_meter']=0;
+        $this->loadModel('ProductionShiftreport');
+
+        foreach ($laminating_targets as $l) {
+            if ($l['laminating_targets']['type'] == 'Dull CT') {
+                foreach ($production_shiftreport as $p) {
+                    if ($p['production_shiftreport']['brand'] == $l['laminating_targets']['brand']) {
+                        //$data['dull_ct'] = $p['production_shiftreport']['CT'];
+                        $brand = $l['laminating_targets']['brand'];
+                        $data['dull_ct'] = $this->ProductionShiftreport->query("select sum(CT) as ct from production_shiftreport 
+                            where brand='$brand'")[0]['production_shiftreport']['ct'];
+                    }
+
+                }
+            }
+            if ($l['laminating_targets']['type'] == '2 yard') {
+                foreach ($production_shiftreport as $p) {
+                    if ($p['production_shiftreport']['brand'] == $l['laminating_targets']['brand']) {
+                        //$data['two_yard'] = $p['production_shiftreport']['CT'];
+                        $brand = $l['laminating_targets']['brand'];
+                        $data['two_yard'] = $this->ProductionShiftreport->query("select sum(CT) as ct from production_shiftreport 
+                            where brand='$brand'")[0]['production_shiftreport']['ct'];
+
+                    }
+
+                }
+            }
+            if ($l['laminating_targets']['type'] == '2 meter') {
+                foreach ($production_shiftreport as $p) {
+                    if ($p['production_shiftreport']['brand'] == $l['laminating_targets']['brand']) {
+                        //$data['two_meter'] = $p['production_shiftreport']['CT'];
+                        $brand = $l['laminating_targets']['brand'];
+                        $data['two_meter'] = $this->ProductionShiftreport->query("select sum(CT) as ct from production_shiftreport 
+                            where brand='$brand'")[0]['production_shiftreport']['ct'];
+
+                    }
+
+                }
+            }
+        }
+
+        return $data;
+    }
+
 
     public function material()
     {
@@ -2089,16 +2165,16 @@ Dimension
         
 
         //for yearly data
-        $base_ut = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ut) FROM `production_shiftreport`) 
-            as scrap_base_ut from production_shiftreport")[0][0]['scrap_base_ut'];
-        $base_mt = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_mt) FROM `production_shiftreport`) 
-            as scrap_base_mt from production_shiftreport")[0][0]['scrap_base_mt'];
-        $base_ot = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ot) FROM `production_shiftreport`) 
-            as scrap_base_ot from production_shiftreport")[0][0]['scrap_base_ot'];
-        $print_film = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(print_film) FROM `production_shiftreport`) 
-            as scrap_print_film from production_shiftreport")[0][0]['scrap_print_film'];
-        $CT = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(CT) FROM `production_shiftreport`) 
-            as scrap_CT from production_shiftreport")[0][0]['scrap_CT'];
+        $base_ut = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ut) FROM `production_shiftreport` where base_ut>0) 
+            as scrap_base_ut from production_shiftreport where base_ut>0")[0][0]['scrap_base_ut'];
+        $base_mt = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_mt) FROM `production_shiftreport` where base_mt>0) 
+            as scrap_base_mt from production_shiftreport where base_mt>0")[0][0]['scrap_base_mt'];
+        $base_ot = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ot) FROM `production_shiftreport` where base_ot>0) 
+            as scrap_base_ot from production_shiftreport where base_ot>0")[0][0]['scrap_base_ot'];
+        $print_film = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(print_film) FROM `production_shiftreport` where print_film>0) 
+            as scrap_print_film from production_shiftreport where print_film>0")[0][0]['scrap_print_film'];
+        $CT = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(CT) FROM `production_shiftreport` where CT>0) 
+            as scrap_CT from production_shiftreport where CT>0")[0][0]['scrap_CT'];
 
         //var_dump($print_film);die;
         $this->set('base_ut',$base_ut);
@@ -2110,16 +2186,16 @@ Dimension
         
 
         //for monthly data
-        $base_ut_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ut) FROM `production_shiftreport`) 
-            as scrap_base_ut from production_shiftreport where date like '$latest_prod_month_year%'")[0][0]['scrap_base_ut'];
-        $base_mt_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_mt) FROM `production_shiftreport`) 
-            as scrap_base_mt from production_shiftreport where date like '$latest_prod_month_year%'")[0][0]['scrap_base_mt'];
-        $base_ot_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ot) FROM `production_shiftreport`) 
-            as scrap_base_ot from production_shiftreport where date like '$latest_prod_month_year%'")[0][0]['scrap_base_ot'];
-        $print_film_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(print_film) FROM `production_shiftreport`) 
-            as scrap_print_film from production_shiftreport where date like '$latest_prod_month_year%'")[0][0]['scrap_print_film'];
-        $CT_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(CT) FROM `production_shiftreport`) 
-            as scrap_CT from production_shiftreport where date like '$latest_prod_month_year%'")[0][0]['scrap_CT'];
+        $base_ut_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ut) FROM `production_shiftreport` where date like '$latest_prod_month_year%' and base_ut>0) 
+            as scrap_base_ut from production_shiftreport where date like '$latest_prod_month_year%' and base_ut>0")[0][0]['scrap_base_ut'];
+        $base_mt_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_mt) FROM `production_shiftreport` where date like '$latest_prod_month_year%' and base_mt>0) 
+            as scrap_base_mt from production_shiftreport where date like '$latest_prod_month_year%' and base_mt>0")[0][0]['scrap_base_mt'];
+        $base_ot_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ot) FROM `production_shiftreport` where date like '$latest_prod_month_year%' and base_ot>0) 
+            as scrap_base_ot from production_shiftreport where date like '$latest_prod_month_year%' and base_ot>0")[0][0]['scrap_base_ot'];
+        $print_film_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(print_film) FROM `production_shiftreport` where date like '$latest_prod_month_year%' and print_film>0) 
+            as scrap_print_film from production_shiftreport where date like '$latest_prod_month_year%' and print_film>0")[0][0]['scrap_print_film'];
+        $CT_month = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(CT) FROM `production_shiftreport` where date like '$latest_prod_month_year%' and CT>0) 
+            as scrap_CT from production_shiftreport where date like '$latest_prod_month_year%' and CT>0")[0][0]['scrap_CT'];
 
         $this->set('base_ut_month',$base_ut_month);
         $this->set('base_mt_month',$base_mt_month);
@@ -2129,16 +2205,17 @@ Dimension
         
         
         //for daily data
-        $base_ut_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ut) FROM `production_shiftreport`) 
-            as scrap_base_ut from production_shiftreport where date='$latest_date_prod'")[0][0]['scrap_base_ut'];
-        $base_mt_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_mt) FROM `production_shiftreport`) 
-            as scrap_base_mt from production_shiftreport where date='$latest_date_prod'")[0][0]['scrap_base_mt'];
-        $base_ot_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ot) FROM `production_shiftreport`) 
-            as scrap_base_ot from production_shiftreport where date='$latest_date_prod'")[0][0]['scrap_base_ot'];
-        $print_film_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(print_film) FROM `production_shiftreport`) 
-            as scrap_print_film from production_shiftreport where  date='$latest_date_prod'")[0][0]['scrap_print_film'];
-        $CT_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(CT) FROM `production_shiftreport`) 
-            as scrap_CT from production_shiftreport where date='$latest_date_prod'")[0][0]['scrap_CT'];
+        $base_ut_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ut) FROM `production_shiftreport` where date='$latest_date_prod' and base_ut>0) 
+            as scrap_base_ut from production_shiftreport where date='$latest_date_prod' and base_ut>0")[0][0]['scrap_base_ut'];
+        $base_mt_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_mt) FROM `production_shiftreport` where date='$latest_date_prod' and base_mt>0) 
+            as scrap_base_mt from production_shiftreport where date='$latest_date_prod' and base_mt>0")[0][0]['scrap_base_mt'];
+        $base_ot_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(base_ot) FROM `production_shiftreport` where date='$latest_date_prod' and base_ot>0) 
+            as scrap_base_ot from production_shiftreport where date='$latest_date_prod' and base_ot>0")[0][0]['scrap_base_ot'];
+        $print_film_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(print_film) FROM `production_shiftreport` where date='$latest_date_prod' and print_film>0) 
+            as scrap_print_film from production_shiftreport where  date='$latest_date_prod' and print_film>0")[0][0]['scrap_print_film'];
+        $CT_daily = $this->ProductionShiftreport->query("select sum(output) / (SELECT sum(CT) FROM `production_shiftreport` where date='$latest_date_prod' and CT>0) 
+            as scrap_CT from production_shiftreport where date='$latest_date_prod' and CT>0")[0][0]['scrap_CT'];
+
 
 
         $this->set('base_ut_daily',$base_ut_daily);
@@ -2154,9 +2231,9 @@ Dimension
         
         foreach($laminating_target as $lam_target):
             $lam_brand = $lam_target['laminating_targets']['brand'];
-            $check_pf = $this->ProductionShiftreport->query("select sum(output)/sum(print_film) as pf from production_shiftreport where brand='$lam_brand'")[0][0]['pf'];
+            $check_pf = $this->ProductionShiftreport->query("select sum(output)/sum(print_film) as pf from production_shiftreport where brand='$lam_brand' order by brand asc" )[0][0]['pf'];
             if($check_pf == 0){
-                $lam_weight[$lam_brand] = $this->ProductionShiftreport->query("select sum(output)/sum(base_ot) as ot from production_shiftreport where brand='$lam_brand'")[0][0]['ot'];
+                $lam_weight[$lam_brand] = $this->ProductionShiftreport->query("select sum(output)/sum(base_ot) as ot from production_shiftreport where brand='$lam_brand' order by brand asc")[0][0]['ot'];
             }else{
                 $lam_weight[$lam_brand] = $check_pf;
             }
@@ -2174,6 +2251,11 @@ Dimension
         $this->set('prod_output_day',$prod_output_day);
         $this->set('prod_output_month',$prod_output_month);
         $this->set('prod_output_year',$prod_output_year);
+
+
+
+
+
 
         
     }

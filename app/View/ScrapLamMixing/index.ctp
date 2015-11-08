@@ -11,7 +11,7 @@
     });
 </script>
 
-<div class="scrapMixing index">
+<div class="ScrapLamMixing index">
 	<div class="panel panel-primary">
         <div class="panel-heading"><?php echo __('Scrap Sent to Mixing'); ?> </div>
         <div class="panel-body">
@@ -21,8 +21,8 @@
                 // echo '<tr><td>' . $this->Search->input('date', array('id' => 'nepalidatepicker', 'class' => 'nepalidatepicker')) . '</td>';
                 // echo '<td>' . $this->Search->end(__('Search', true)) . '</td>';
                 ?>
-                <td><?php echo $this->Html->link("Add", array('controller' => 'ScrapMixing', 'action' => 'add'), array('class' => 'btn btn-primary')); ?>  
-                <a class="btn btn-success" href="<?=$base_url;?>ScrapMixing/exportcsv"><i class="glyphicon glyphicon-download"></i> Export CSV</a>
+                <td><?php echo $this->Html->link("Add", array('controller' => 'ScrapLamMixing', 'action' => 'add'), array('class' => 'btn btn-primary')); ?>  
+                <a class="btn btn-success" href="<?=$base_url;?>ScrapLamMixing/exportcsv"><i class="glyphicon glyphicon-download"></i> Export CSV</a>
                 </td>
 
                 </tr>
@@ -38,16 +38,16 @@
 			<th><?php echo $this->Paginator->sort('weight'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
-	<?php foreach ($scrapMixings as $scrapMixing): ?>
+	<?php foreach ($ScrapLamMixings as $ScrapLamMixing): ?>
 	<tr>
-		
-		<td><?php echo h($scrapMixing['ScrapMixing']['date']); ?>&nbsp;</td>
-		<td><?php echo h($scrapMixing['ScrapMixing']['scrap_sent']); ?>&nbsp;</td>
-		<td><?php echo h($scrapMixing['ScrapMixing']['weight']); ?>&nbsp;</td>
+
+		<td><?php echo h($ScrapLamMixing['ScrapLamMixing']['date']); ?>&nbsp;</td>
+		<td><?php echo h($ScrapLamMixing['ScrapLamMixing']['scrap_sent']); ?>&nbsp;</td>
+		<td><?php echo h($ScrapLamMixing['ScrapLamMixing']['weight']); ?>&nbsp;</td>
 		<td class="actions">
 			
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $scrapMixing['ScrapMixing']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $scrapMixing['ScrapMixing']['id']), null, __('Are you sure you want to delete # %s?', $scrapMixing['ScrapMixing']['id'])); ?>
+			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $ScrapLamMixing['ScrapLamMixing']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $ScrapLamMixing['ScrapLamMixing']['id']), null, __('Are you sure you want to delete # %s?', $ScrapLamMixing['ScrapLamMixing']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

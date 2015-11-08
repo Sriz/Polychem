@@ -202,9 +202,11 @@ class TblConsumptionStocksController extends AppController
         foreach ($type as $t):
             $arr[] = $t['BaseEmboss']['Type'];
         endforeach;
+
         echo "<option value=''>--Choose One--</option>";
         foreach ($arr as $t):
-            echo "<option value=$t>$t</option>";
+            
+            echo "<option value='$t'>$t</option>";
         endforeach;
     }
 

@@ -1,12 +1,12 @@
 <?php
 App::uses('AppController', 'Controller');
 /**
- * ScrapMixing Controller
+ * ScrapLamMixing Controller
  *
- * @property ScrapMixing $ScrapMixing
+ * @property ScrapLamMixing $ScrapLamMixing
  * @property PaginatorComponent $Paginator
  */
-class ScrapMixingController extends AppController {
+class ScrapLamMixingController extends AppController {
 /**
  * Components
  *
@@ -19,8 +19,8 @@ class ScrapMixingController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->ScrapMixing->recursive = 0;
-		$this->set('ScraplamMixings', $this->Paginator->paginate());
+		$this->ScrapLamMixing->recursive = 0;
+		$this->set('ScrapLamMixings', $this->Paginator->paginate());
 	}
 /**
  * view method
@@ -30,11 +30,11 @@ class ScrapMixingController extends AppController {
  * @return void
  */
 	public function view($id = null) {
-		if (!$this->ScrapMixing->exists($id)) {
+		if (!$this->ScrapLamMixing->exists($id)) {
 			throw new NotFoundException(__('Invalid mixing material'));
 		}
-		$options = array('conditions' => array('ScrapMixing.' . $this->ScrapMixing->primaryKey => $id));
-		$this->set('scrapMixing', $this->ScrapMixing->find('first', $options));
+		$options = array('conditions' => array('ScrapLamMixing.' . $this->ScrapLamMixing->primaryKey => $id));
+		$this->set('ScrapLamMixing', $this->ScrapLamMixing->find('first', $options));
 	}
 /**
  * add method
@@ -43,7 +43,7 @@ class ScrapMixingController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
-			if ($this->ScrapMixing->save($this->request->data)) {
+			if ($this->ScrapLamMixing->save($this->request->data)) {
 				$this->Session->setFlash(__('The Scrap Mixing has been saved.'), array ('class' => 'alert alert-success'));
 				return $this->redirect(array('action' => 'index/sort:date/direction:desc'));
 			} else {
@@ -60,19 +60,19 @@ class ScrapMixingController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
-		if (!$this->ScrapMixing->exists($id)) {
+		if (!$this->ScrapLamMixing->exists($id)) {
 			throw new NotFoundException(__('Invalid scrap sent to mixing'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			if ($this->ScrapMixing->save($this->request->data)) {
+			if ($this->ScrapLamMixing->save($this->request->data)) {
 				$this->Session->setFlash(__('The scrap sent to mixing has been saved.'));
 				return $this->redirect(array('action' => 'index/sort:date/direction:desc'));
 			} else {
 				$this->Session->setFlash(__('The scrap sent to mixing could not be saved. Please, try again.'));
 			}
 		} else {
-			$options = array('conditions' => array('ScrapMixing.' . $this->ScrapMixing->primaryKey => $id));
-			$this->request->data = $this->ScrapMixing->find('first', $options);
+			$options = array('conditions' => array('ScrapLamMixing.' . $this->ScrapLamMixing->primaryKey => $id));
+			$this->request->data = $this->ScrapLamMixing->find('first', $options);
 		}
        
 	}
@@ -84,12 +84,12 @@ class ScrapMixingController extends AppController {
  * @return void
  */
 	public function delete($id = null) {
-		$this->ScrapMixing->id = $id;
-		if (!$this->ScrapMixing->exists()) {
+		$this->ScrapLamMixing->id = $id;
+		if (!$this->ScrapLamMixing->exists()) {
 			throw new NotFoundException(__('Invalid mixing material'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this->ScrapMixing->delete()) {
+		if ($this->ScrapLamMixing->delete()) {
 			$this->Session->setFlash(__('The scrap sent to mixing has been deleted.'));
 		} else {
 			$this->Session->setFlash(__('The scrap sent to mixing could not be deleted. Please, try again.'));
@@ -98,8 +98,8 @@ class ScrapMixingController extends AppController {
 	}
 	function exportcsv() 
     {
-        $this->loadModel('ScrapMixing');
-        $result=$this->ScrapMixing->query("select * from scrap_mixings order by date desc");
+        $this->loadModel('ScrapLamMixing');
+        $result=$this->ScrapLamMixing->query("select * from scrap_lam_mixings order by date desc");
 
         $this->set('posts', $result);
 

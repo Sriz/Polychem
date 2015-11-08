@@ -1067,7 +1067,7 @@
                                     //print'<pre>';print_r($dd);print'</pre>';
                                     echo "<tr>";
                                         echo '<td>';
-                                            echo number_format($dd[0][0]['output'],2);
+                                            echo number_format($dd[0][0]['output'],3);
                                         echo "</td>";
                                 endforeach; 
                                 ?>
@@ -1143,7 +1143,7 @@
                                     //print'<pre>';print_r($dy);print'</pre>';
                                     echo "<tr>";
                                         echo '<td>';
-                                            echo number_format($dm['dimension_target']['target'],2);
+                                            echo number_format($dm['dimension_target']['target'],3);
                                         echo "</td>";
                                 endforeach;
                                 ?>
@@ -1175,7 +1175,14 @@
                                 for($i=0;$i<$c;$i++){
                                 echo "<tr>";
                                     echo '<td id="diff'.$i.'">';
-                                        echo number_format(($output_m[$i][0][0]['output']-$dim_target[$i]['dimension_target']['target'])*100/$dim_target[$i]['dimension_target']['target'],2)."%";
+                                        //echo '<pre>jhj';print_r($dim_target[$i]['dimension_target']['target']);die;
+                                        //(output-target)*100/target
+                                        $o = $output_m[$i][0][0]['output'];
+                                        $t = $dim_target[$i]['dimension_target']['target'];
+                                        //echo'<pre>';print_r($dim_target[$i]['dimension_target']['target']);
+                                        echo number_format((($o-$t)*100/$t),2)."%";
+                                        //echo '<br/>';
+                                        //echo'<pre>';print_r($dim_target[$i]['dimension_target']['target']);die;
                                     echo "</td>";
                                 }
                                 ?>
@@ -1575,7 +1582,7 @@
                                                 // $diff = ($loss['0']['cratio']-$tp[0]['print_dimension_target']['target'])*100/$tp[0]['print_dimension_target']['target'];
                                                 $diff = number_format($loss['0']['cratio'],2)-number_format($tp[0]['print_dimension_target']['target'],2);
                                                 //echo $diff;die;
-                                                echo '<td class="dimensionTarget-'.$tp[0]['print_dimension_target']['id'].'" style="text-align: ;">' . number_format($diff, 2) . '%</td>';
+                                                echo '<td class="dimensionTarget-'.$tp[0]['print_dimension_target']['id'].'" style="text-align: ;">' . number_format($diff, 2) . '</td>';
                                                    
                                             }
                                         }
@@ -2142,12 +2149,12 @@
                 </div>
                 <div class="panel-body">
                     <table class="table table-bordered table-hover">
-                        <thead>
+                        <tr class="success">
                             <th>Base</th>
                             <th>Today <br/>(<?= $latest_date_prod;?>)</th>
                             <th>To Month <br/>(<?= $latest_prod_month_year;?>)</th>
                             <th>To Year <br/>(<?= $latest_prod_year;?>)</th>
-                        </thead>
+                        </tr>
 
                         <tr>
                             <td>Base-UT</td>
@@ -2193,24 +2200,45 @@
                 <div class="panel-heading">
                     Scrap by Brand%
                 </div>
+                <script>
+                    $(document).ready(function(){
+                     <?php for($i=0; $i<count($lam); $i++):?>         
+                        var varLaminationTarget = parseFloat($("#diff<?=$i;?>").html());
+                        if(varLaminationTarget<0)
+                        {
+                            $("#diff<?=$i;?>").removeClass('danger').addClass('success');
+                        }
+                     <?php endfor;?>
+                    });
+                </script>
                 <div class="panel-body">
                     <table class="table table-bordered table-hover">
-                        <thead>
+                        <tr class="success">
                             <th>Brand</th>
-                            <th>Target Weight</th>
-                            <th>Output Weight</th>
+                            <th>Target</th>
+                            <th>Output</th>
                             <th>Difference</th>
-                        </thead>
+                        </tr>
                         <?php foreach($lam_target as $lam): ?>
-                        <tr>
+                         <tr>
                             <td><?= $lam['laminating_targets']['brand']?></td>
                             <td><?= $lam['laminating_targets']['weight']?></td>
-                            <?php $output_wt = $lam_weight[$lam['laminating_targets']['brand']]; 
-                                  $target_wt = $lam['laminating_targets']['weight']; ?>
+                            <?php $output_wt = $lam_weight[$lam['laminating_targets']['brand']];
+                            $target_wt = $lam['laminating_targets']['weight'];?>
+
                             <td><?= number_format($output_wt,2); ?></td>
-                            <td><?=  number_format($output_wt-$target_wt,2)?></td>
+                            <?php
+                            $classSuccess= ($output_wt-$target_wt)<0?'danger':'';
+                            echo "<td class='$classSuccess'>";
+                            echo number_format(($output_wt-$target_wt),2);
+                            echo "</td>";
+                            ?>
                         </tr>
                         <?php endforeach; ?>
+
+                        
+
+
                     </table>
                 </div>
             </div>
@@ -2218,66 +2246,45 @@
     </div>
 
 
-
-   
-    <!-- <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">Scrap % with Brand</div>
-                <div class="panel-body">
-                    <div class="container-fluid">
-                        <table class="table">
+    <!-- CT Table-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"> CT KG Consumption </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-bordered">
                             <tr class="success">
-                                <th>Brand</th>
-                                <th style="text-align: right;">Today</th>
-
+                                <td></td>
+                                <td>Today</td>
+                                <td>To Month</td>
+                                <td>To Year</td>
                             </tr>
-
-                            <?php
-                            foreach ($tdprint_percent as $tdp):
-                                echo '<tr>';
-                                echo '<td>' . $tdp['production_shiftreport']['brand'] . '</td><td style="text-align: right;">' . number_format($tdp['0']['print_film'], 2) . '</td>';
-                                echo '</tr>';
-                            endforeach;
-                            ?>
-
-                        </table>
-                        <table class="table">
-                            <tr class="success">
-                                <th>Brand</th>
-                                <th style="text-align: right;">To Month</th>
-
+                            <tr>
+                                <td>2 Yard</td>
+                                <td><?=number_format($ctArr['ToDay']['two_yard'],2);?></td>
+                                <td><?=number_format($ctArr['ToMonth']['two_yard'],2);?></td>
+                                <td><?=number_format($ctArr['ToYear']['two_yard'],2);?></td>
                             </tr>
-
-                            <?php
-                            foreach ($tmprint_percent as $tdp):
-                                echo '<tr>';
-                                echo '<td>' . $tdp['production_shiftreport']['brand'] . '</td><td style="text-align: right;">' . number_format($tdp['0']['print_film'], 2) . '</td>';
-                                echo '</tr>';
-                            endforeach;
-                            ?>
-
-                        </table>
-
-                        <table class="table">
-                            <tr class="success">
-                                <th>Brand</th>
-                                <th style="text-align: right;">To Year</th>
+                            <tr>
+                                <td>2 Meter</td>
+                                <td><?=number_format($ctArr['ToDay']['two_meter'],2);?></td>
+                                <td><?=number_format($ctArr['ToMonth']['two_meter'],2);?></td>
+                                <td><?=number_format($ctArr['ToYear']['two_meter'],2);?></td>
                             </tr>
-                            <?php
-                            foreach ($typrint_percent as $tdp):
-                                echo '<tr>';
-                                echo '<td>' . $tdp['production_shiftreport']['brand'] . '</td><td style="text-align: right;">' . number_format($tdp['0']['print_film'], 2) . '</td>';
-                                echo '</tr>';
-                            endforeach;
-                            ?>
+                            <tr>
+                                <td>Dull CT</td>
+                                <td><?=number_format($ctArr['ToDay']['dull_ct'],2);?></td>
+                                <td><?=number_format($ctArr['ToMonth']['dull_ct'],2);?></td>
+                                <td><?=number_format($ctArr['ToYear']['dull_ct'],2);?></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
-
+        <!-- end Productions Shiftreport -->
+   
+  
 <!--Laminating break down-->
     <div class="row">
         <div class="col-md-12" style="margin:0px;padding:0px;">
